@@ -23,7 +23,7 @@ int main (int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 
-    // Declares window size
+    // Velicina prozora
     glutInitWindowSize(1100, 600);
 
     // Pozicija na ekranu
@@ -97,15 +97,13 @@ void displayGame() {
         glBegin(GL_LINE_STRIP);
         // i keeps track of angle
         float i = 0;
-        // change in m denotes motion in vertical direction and
-        // change in n denotes motion in horizontal direction
         vertical_movement = vertical_movement + 6;
         horizontal_movement = horizontal_movement + 4;
         // drawing of circle centre at (0, 12) iterated up to 2*pi, i.e., 360 degree
         while (i <= 2 * pi) {
             y = 12 + 20 * cos(i);
             x = 20 * sin(i);
-            i = i + 0.1;
+            i = i + 0.5;
 
             if (vertical_movement == 288 && vertical_ball_movement == 0) {
                 vertical_ball_flight_modifier = -1;
@@ -118,7 +116,7 @@ void displayGame() {
                 vertical_movement = -288;
                 vertical_ball_movement = 0;
             }
-            // flag2 is 0 to show motion in rightward direction and is 1 for leftward direction
+            // horizontal_ball_movement 0 desno, 1 levo
             if (horizontal_movement == 580 && horizontal_ball_movement == 0) {
                 horizontal_ball_flight_modifier = -1;
                 horizontal_movement = -580;

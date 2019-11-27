@@ -19,9 +19,8 @@
 	<_mingw.h>
 	<stddef.h>
 
-983698386 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
+976692172 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
 	<windows.h>
-	<stdlib.h>
 	<GL/gl.h>
 	<GL/glu.h>
 
@@ -235,4 +234,13 @@
 
 1341006774 c:\program files (x86)\codeblocks\mingw\include\math.h
 	<_mingw.h>
+
+1574866640 source:c:\users\aleksandar\eclipse-workspace\eslcloud\cpong\game.c
+	"game_header.h"
+
+1574867212 c:\users\aleksandar\eclipse-workspace\eslcloud\cpong\game_header.h
+	<stdio.h>
+	<GL/gl.h>
+	<GL/glut.h>
+	<math.h>
 

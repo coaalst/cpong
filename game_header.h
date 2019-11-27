@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include <GL/gl.h>
 #include<GL/glut.h>
 #include<math.h>
 #define pi 3.142857
@@ -7,11 +8,11 @@
 int moved_left, moved_right, left, right;
 
 // Kretanje lopte
-int vertical_movment, 
-    vertical_ball_flight_modifier, 
+int vertical_movment,
+    vertical_ball_flight_modifier,
     vertical_ball_movement;
 
-int horizontal_ball_flight_modifier, 
+int horizontal_ball_flight_modifier,
     horizontal_ball_movement,
     horizontal_movement;
 
