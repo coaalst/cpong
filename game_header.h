@@ -4,6 +4,9 @@
 #include <time.h>
 #include <math.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #define RAND_MAX        0x6fffffff
 #define pi              3.142857
 
@@ -12,7 +15,7 @@ const int SQUARE;
 const int CIRCLE;
 
 // Tekstura za trenutni objekat
-int currentTexture;  
+int currentTexture;
 
 //trenutni objekat
 int currentObject = 0;
@@ -28,6 +31,12 @@ int vertical_movment,
 int horizontal_ball_flight_modifier,
     horizontal_ball_movement,
     horizontal_movement;
+
+int last_x, last_y, left, middle, right;
+int zoom_y;
+int anglex, angley, anglez;
+int lookfrom;
+int ang;
 
 // Promenljive igre
 int score, count;
