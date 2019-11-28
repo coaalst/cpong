@@ -1,8 +1,21 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <GL/gl.h>
-#include<GL/glut.h>
-#include<math.h>
-#define pi 3.142857
+#include <GL/glut.h>
+#include <time.h>
+#include <math.h>
+
+#define RAND_MAX        0x5fffffff
+#define pi              3.142857
+
+// Konstante za tip objekta
+const int SQUARE;
+const int CIRCLE;
+
+// Tekstura za trenutni objekat
+int currentTexture;  
+
+//trenutni objekat
+int currentObject = 0;
 
 // Kretanje slajdera
 int moved_left, moved_right, left, right;
@@ -20,5 +33,6 @@ int horizontal_ball_flight_modifier,
 int score, count;
 
 void initGame(void);
+void loadTextures(void);
 void keyboard(unsigned char key_pressed, int x_cord, int y_cord);
 void displayGame(void);

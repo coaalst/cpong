@@ -4,6 +4,8 @@
 int moved_left = 0, moved_right = 0, left = 0, right = 0;
 
 // Promenljive za let lopte
+float random_trajectory_modifier = 0;
+
 int vertical_movement = 0,
     vertical_ball_flight_modifier = 1,
     vertical_ball_movement = 0;
@@ -14,6 +16,10 @@ int horizontal_ball_flight_modifier = 1,
 
 // Promenljive za skor
 int score = 0, count = 1;
+
+char* textureFileNames[6] = {   // file names for the files from which texture images are loaded
+            "textures/mandelbrot.png"
+       };
 
 /**
  * Funkcija za pokretanje programa
@@ -38,6 +44,7 @@ int main (int argc, char** argv) {
     // Initiate the game
     initGame();
     glutDisplayFunc(displayGame);
+    glutIdleFunc(displayGame);
     glutMainLoop();
 }
 
@@ -86,24 +93,35 @@ void initGame (){
 
     // Velicina ekrana
     gluOrtho2D(-620.0, 620.0, -340.0, 340.0);
+
+    // Random modifier
+    srand((unsigned)time(NULL));
 }
 
 void displayGame() {
-    // x and y keeps point on circumference of circle
+
+    // tacka za krug
     int x, y, k;
-    // outer 'for loop' is to for making motion in ball
-    for (k = 0; k <= 400; k += 5) {
+    srand((unsigned)time(NULL));
+    float random_trajectory_modifier = (float)rand() / RAND_MAX;
+    printf("rand faktor:\t%f\n", random_trajectory_modifier);
+
+    // Pokretanje lopte
+    for (k = 0; k <= 5; k += 5) {
+
         glClear(GL_COLOR_BUFFER_BIT);
         glBegin(GL_LINE_STRIP);
-        // i keeps track of angle
+
+        // i nam je ugao, r nam je random faktor
         float i = 0;
+
         vertical_movement = vertical_movement + 6;
         horizontal_movement = horizontal_movement + 4;
-        // drawing of circle centre at (0, 12) iterated up to 2*pi, i.e., 360 degree
+        //nacrtamo krug na (0,12), iterated up to 2*pi, i.e., 360 degree
         while (i <= 2 * pi) {
             y = 12 + 20 * cos(i);
             x = 20 * sin(i);
-            i = i + 0.5;
+            i = i + random_trajectory_modifier;
 
             if (vertical_movement == 288 && vertical_ball_movement == 0) {
                 vertical_ball_flight_modifier = -1;
@@ -163,3 +181,6 @@ void displayGame() {
     }
 }
 
+void loadTextures(){
+
+}
