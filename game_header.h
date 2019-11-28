@@ -3,6 +3,7 @@
 #include <GL/glut.h>
 #include <time.h>
 #include <math.h>
+#include "free_image.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -32,11 +33,6 @@ int horizontal_ball_flight_modifier,
     horizontal_ball_movement,
     horizontal_movement;
 
-int last_x, last_y, left, middle, right;
-int zoom_y;
-int anglex, angley, anglez;
-int lookfrom;
-int ang;
 
 // Promenljive igre
 int score, count;

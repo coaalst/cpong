@@ -17,6 +17,11 @@ int horizontal_ball_flight_modifier = 1,
 // Promenljive za skor
 int score = 0, count = 1, game = 1;
 
+char* textureFileNames[2] = {   // file names for the files from which texture images are loaded
+            "res/images/slider.jpg",
+            "res/images/ball.jpg",
+       };
+
 /**
  * Funkcija za pokretanje programa
  * Uzima argumente iz linije
@@ -96,21 +101,17 @@ void initGame()
     glEnable(GL_TEXTURE_2D);
     //loadTextures();
 
-    // Random modifier
-    srand((unsigned)time(NULL));
+   
 }
 
 
-struct{
-GLfloat x_point;
-GLfloat y_point;
-}typedef Point;
 
 void displayGame()
 {
     if (game == 1)
-    {
+    {   
         glClearColor(0, 0, 0, 0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     if(game == 0)
@@ -124,14 +125,12 @@ void displayGame()
         glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
         // tacka za krug
         int x, y, k;
-        srand((unsigned)time(NULL));
-        float random_trajectory_modifier = (float)rand() / RAND_MAX;
+
         printf("rand faktor:\t%f\n", random_trajectory_modifier);
 
         // Pokretanje lopte
         for (k = 0; k <= 15; k += 5)
         {
-
             glClear(GL_COLOR_BUFFER_BIT);
             glBegin(GL_LINE_STRIP);
 
