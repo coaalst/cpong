@@ -245,10 +245,10 @@
 	<GL/glut.h>
 	<math.h>
 
-1574950196 source:c:\users\coa\desktop\testgame\pong\cpong\game.c
+1574953670 source:c:\users\coa\desktop\testgame\pong\cpong\game.c
 	"game_header.h"
 
-1574950573 c:\users\coa\desktop\testgame\pong\cpong\game_header.h
+1574953758 c:\users\coa\desktop\testgame\pong\cpong\game_header.h
 	<stdio.h>
 	<GL/gl.h>
 	<GL/glut.h>

@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-#define RAND_MAX        0x5fffffff
+#define RAND_MAX        0x6fffffff
 #define pi              3.142857
 
 // Konstante za tip objekta
@@ -34,5 +34,6 @@ int score, count;
 
 void initGame(void);
 void loadTextures(void);
+void loadBMP_custom(const char * imagepath, int i);
 void keyboard(unsigned char key_pressed, int x_cord, int y_cord);
 void displayGame(void);
