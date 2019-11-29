@@ -245,10 +245,10 @@
 	<GL/glut.h>
 	<math.h>
 
-1574983465 source:c:\users\coa\desktop\testgame\pong\cpong\game.c
+1575054568 source:c:\users\coa\desktop\testgame\pong\cpong\game.c
 	"game_header.h"
 
-1574982522 c:\users\coa\desktop\testgame\pong\cpong\game_header.h
+1575054655 c:\users\coa\desktop\testgame\pong\cpong\game_header.h
 	<stdio.h>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -256,6 +256,8 @@
 	<time.h>
 	<math.h>
 	<string.h>
+	<unistd.h>
+	<windows.h>
 
 1341006776 c:\program files (x86)\codeblocks\mingw\include\time.h
 	<_mingw.h>
@@ -286,4 +288,22 @@
 
 1341006776 c:\program files (x86)\codeblocks\mingw\include\stdint.h
 	<stddef.h>
+
+1341006776 c:\program files (x86)\codeblocks\mingw\include\unistd.h
+	<io.h>
+	<process.h>
+	<getopt.h>
+	<sys/types.h>
+
+1341006774 c:\program files (x86)\codeblocks\mingw\include\io.h
+	<_mingw.h>
+	<sys/types.h>
+
+1341006774 c:\program files (x86)\codeblocks\mingw\include\process.h
+	<_mingw.h>
+	<sys/types.h>
+	<stdint.h>
+
+1341006772 c:\program files (x86)\codeblocks\mingw\include\getopt.h
+	<_mingw.h>
 
