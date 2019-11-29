@@ -20,53 +20,6 @@ int last_x = 0,
 // Promenljive za skor
 int score = 0, count = 1, game = 1;
 
-GLubyte fish[] = {
-    0x00,
-    0x60,
-    0x01,
-    0x00,
-    0x00,
-    0x90,
-    0x01,
-    0x00,
-    0x03,
-    0xf8,
-    0x02,
-    0x80,
-    0x1c,
-    0x37,
-    0xe4,
-    0x40,
-    0x20,
-    0x40,
-    0x90,
-    0x40,
-    0xc0,
-    0x40,
-    0x78,
-    0x80,
-    0x41,
-    0x37,
-    0x84,
-    0x80,
-    0x1c,
-    0x1a,
-    0x04,
-    0x80,
-    0x03,
-    0xe2,
-    0x02,
-    0x40,
-    0x00,
-    0x11,
-    0x01,
-    0x40,
-    0x00,
-    0x0f,
-    0x00,
-    0xe0,
-};
-
 // Return a random float in the range 0.0 to 1.0.
 GLfloat randomFloat()
 {
@@ -169,25 +122,30 @@ void displayGame()
 
         // Crvene linije
         int col = 0;
-        for(col = 0; col <= 140; col++){
-            glColor3f(3 / 255.0f, (252 - col) / 255.0f, (240 - col) / 255.0f);
-            sprintf(string, "Press S to start");
-            drawText(string, -120, 80);
-            drawText(string, -121, 80);
-            drawText(string, -119, 80);
-            Sleep(10);
-            glutSwapBuffers();
-        }
-         for(col = 0; col <= 140; col++){
-            glColor3f(3 / 255.0f, (12 + col) / 255.0f, col / 255.0f);
-            sprintf(string, "Press S to start");
-            drawText(string, -120, 80);
-            drawText(string, -121, 80);
-            drawText(string, -119, 80);
-            Sleep(10);
-            glutSwapBuffers();
-        }
+        for (col = 0; col <= 2; col++)
+        {
 
+            if (col % 2 == 0)
+            {
+                glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
+                sprintf(string, "Press S to start");
+                drawText(string, -120, 80);
+                drawText(string, -121, 80);
+                drawText(string, -119, 80);
+                Sleep(50);
+            }
+
+            else
+            {
+                glColor3f(1.0f, 0.0f, 0.0f);
+                sprintf(string, "Press S to start");
+                drawText(string, -120, 80);
+                drawText(string, -121, 80);
+                drawText(string, -119, 80);
+                Sleep(50);
+            }
+            glutSwapBuffers();
+        }
     }
 
     // Display game
@@ -315,8 +273,10 @@ void drawText(char *string, int x, int y)
     char *c;
     glPushMatrix();
     glTranslatef(x, y, 0);
-    if(game == 1) glScalef(0.3, 0.3, 1);
-    else glScalef(1, 1, 1);
+    if (game == 1)
+        glScalef(0.3, 0.3, 1);
+    else
+        glScalef(1, 1, 1);
     for (c = string; *c != '\0'; c++)
     {
         glutStrokeCharacter(GLUT_STROKE_ROMAN, *c);
@@ -327,37 +287,17 @@ void drawText(char *string, int x, int y)
 void play_death_animation()
 {
     int num = 0;
+    glPushMatrix();
     glClear(GL_COLOR_BUFFER_BIT);
-    for (num = 0; num < 500; num += 1)
+    for (num = 0; num < 100; num += 1)
     {
-        glBegin(GL_LINE_STRIP);
-        printf("smrt");
-        glVertex2i((last_x - horizontal_ball_flight_modifier * horizontal_movement), (last_y - vertical_ball_flight_modifier * vertical_movement));
-        glEnd();
-
-        // these four points draws outer rectangle which determines window
-        glBegin(GL_LINE_LOOP);
+        glBegin(GL_AMBIENT);
+        glMatrixMode(GL_MODELVIEW);
         glRotatef(30, 0, 0, 0);
-        glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
-        glVertex2i(-600, -320);
-        glVertex2i(-600, 320);
-        glVertex2i(600, 320);
-        glVertex2i(600, -320);
-        glEnd();
-
-        // these four points draws smaller rectangle which is for catching ball
-        glBegin(GL_POLYGON);
-        glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
-        left = -200 + 200 * (moved_right - moved_left);
-        right = 200 + 200 * (moved_right - moved_left);
-        glVertex2i(left, -315);
-        glVertex2i(left, -295);
-        glVertex2i(right, -295);
-        glVertex2i(right, -315);
-        glColor3f(1.0f, 0.0f, 0.0f);
         glEnd();
         Sleep(10);
-        glutSwapBuffers();
     }
+    glPopMatrix();
+    glutSwapBuffers();
     exit(0);
 }
