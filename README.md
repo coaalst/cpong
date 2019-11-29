@@ -1,5 +1,7 @@
 # Cpong
 Small scale game made as an assignment for a computer graphics class. It is still subject to change as there are quite a few tweaks to be made to the overall game logic. 
+
+Built with C using OpenGL running on top of GLUT.
  
 [![Build Status][travis-image]][travis-url]
 
