@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <GL/gl.h>
+#include <GL/glu.h>
 #include <GL/glut.h>
 #include <time.h>
 #include <math.h>
-#include "free_image.h"
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <string.h>
 
 #define RAND_MAX        0x6fffffff
 #define pi              3.142857

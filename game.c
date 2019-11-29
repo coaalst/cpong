@@ -17,10 +17,24 @@ int horizontal_ball_flight_modifier = 1,
 // Promenljive za skor
 int score = 0, count = 1, game = 1;
 
-char* textureFileNames[2] = {   // file names for the files from which texture images are loaded
-            "res/images/slider.jpg",
-            "res/images/ball.jpg",
-       };
+GLubyte fish[] = {
+  0x00, 0x60, 0x01, 0x00,
+  0x00, 0x90, 0x01, 0x00,
+  0x03, 0xf8, 0x02, 0x80,
+  0x1c, 0x37, 0xe4, 0x40,
+  0x20, 0x40, 0x90, 0x40,
+  0xc0, 0x40, 0x78, 0x80,
+  0x41, 0x37, 0x84, 0x80,
+  0x1c, 0x1a, 0x04, 0x80,
+  0x03, 0xe2, 0x02, 0x40,
+  0x00, 0x11, 0x01, 0x40,
+  0x00, 0x0f, 0x00, 0xe0,
+};
+
+// Return a random float in the range 0.0 to 1.0.
+GLfloat randomFloat() {
+  return (GLfloat)rand() / RAND_MAX;
+}
 
 /**
  * Funkcija za pokretanje programa
@@ -80,7 +94,9 @@ void keyboard(unsigned char key, int x, int y)
         if (key == 100)
             moved_right++;
     }
-    if(key == 115) game = 0;
+    if(key == 115) {
+        game = 0;
+    }
     // Poziv za update
     glutPostRedisplay();
 }
@@ -95,28 +111,41 @@ void initGame()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
+
     // Velicina ekrana
     gluOrtho2D(-620.0, 620.0, -340.0, 340.0);
 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);  // (Actually, this one is the default)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glEnable(GL_TEXTURE_2D);
-    //loadTextures();
-
-   
 }
 
 
 
 void displayGame()
 {
+    // Display animation
     if (game == 1)
     {   
-        glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_POINT);
+        for (int i = 0; i < 10000; i++)
+        {
+            glColor3f(randomFloat(), randomFloat(), randomFloat());
+            glRasterPos3f(randomFloat(), randomFloat(), 0.0);
+            glVertex2i(-randomFloat(), randomFloat());
+            glVertex2i(randomFloat(), -randomFloat());
+            //glBitmap(27, 11, 0, 0, 0, 0, fish);
+        }
+
+        glutSwapBuffers();
     }
 
+    // Display game
     if(game == 0)
     {
-        glutPostRedisplay();
         // Pozadina crna
         glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -126,7 +155,7 @@ void displayGame()
         // tacka za krug
         int x, y, k;
 
-        printf("rand faktor:\t%f\n", random_trajectory_modifier);
+
 
         // Pokretanje lopte
         for (k = 0; k <= 15; k += 5)
