@@ -14,17 +14,24 @@ int horizontal_ball_flight_modifier = 1,
     horizontal_ball_movement = 0,
     horizontal_movement = 0;
 
-int last_x = 0,
-    last_y = 0;
-
 // Promenljive za skor
 int score = 0, count = 1, game = 1;
 
-// Return a random float in the range 0.0 to 1.0.
-GLfloat randomFloat()
-{
-    return (GLfloat)rand() / RAND_MAX;
-}
+//promenljive za kisu
+float slowdown = 2.0;
+float velocity = 0.0;
+float zoom = -40.0;
+float pan = 0.0;
+float tilt = 0.0;
+float hailsize = 0.1;
+
+//floor colors
+float r = 0.0;
+float g = 1.0;
+float b = 0.0;
+float ground_points[21][21];
+float ground_colors[21][21];
+float accum = -10.0;
 
 /**
  * Funkcija za pokretanje programa
@@ -88,6 +95,8 @@ void keyboard(unsigned char key, int x, int y)
     {
         game = 0;
     }
+
+    if (key == 113) exit(1);
     // Poziv za update
     glutPostRedisplay();
 }
@@ -107,13 +116,17 @@ void initGame()
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // (Actually, this one is the default)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glEnable(GL_TEXTURE_2D);
 }
 
 void displayGame()
 {
+
+    if(game == 2){
+        play_death_animation();
+    }
     // Display animation
     if (game == 1)
     {
@@ -178,9 +191,6 @@ void displayGame()
                 x = 20 * sin(i);
                 i = i + 0.000100;
 
-                last_x = x;
-                last_y = y;
-
                 if (vertical_movement == 288 && vertical_ball_movement == 0)
                 {
                     vertical_ball_flight_modifier = -1;
@@ -212,7 +222,7 @@ void displayGame()
             }
             glEnd();
 
-            // these four points draws outer rectangle which determines window
+            // Prozor
             glBegin(GL_LINE_LOOP);
             glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
             glVertex2i(-600, -320);
@@ -221,7 +231,7 @@ void displayGame()
             glVertex2i(600, -320);
             glEnd();
 
-            // these four points draws smaller rectangle which is for catching ball
+            // Slider
             glBegin(GL_POLYGON);
             glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
             left = -200 + 200 * (moved_right - moved_left);
@@ -246,7 +256,7 @@ void displayGame()
                     printf("Kraj price, pod mac bato !!!\nSkor ti je :\t%d\n", score);
                     printf("Levo pomerio:\t%d\n", moved_left);
                     printf("Desno pomerio:\t%d\n", moved_right);
-                    play_death_animation();
+                    game = 2;
                 }
 
                 else
@@ -268,6 +278,42 @@ void displayGame()
     }
 }
 
+void init()
+{
+    int x, z;
+
+    glShadeModel(GL_SMOOTH);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearDepth(1.0);
+    glEnable(GL_DEPTH_TEST);
+
+    // Ground Verticies
+    // Ground Colors
+    for (z = 0; z < 21; z++)
+    {
+        for (x = 0; x < 21; x++)
+        {
+            ground_points[x][z] = x - 10.0;
+            ground_points[x][z] = accum;
+            ground_points[x][z] = z - 10.0;
+
+            ground_colors[z][x] = r;   // red value
+            ground_colors[z][x] = g;   // green value
+            ground_colors[z][x] = b;   // blue value
+            ground_colors[z][x] = 0.0; // acummulation factor
+        }
+    }
+
+    // Init partikala
+    for (loop = 0; loop < MAX_PARTICLES; loop++)
+    {
+        initParticles(loop);
+    }
+}
+
+/**
+ * Funkcija za ispis teksta na ekran preko GLUT
+ */
 void drawText(char *string, int x, int y)
 {
     char *c;
@@ -284,20 +330,81 @@ void drawText(char *string, int x, int y)
     glPopMatrix();
 }
 
+/**
+ * Funkcija za prikaz death screen-a
+ */
 void play_death_animation()
 {
-    int num = 0;
-    glPushMatrix();
-    glClear(GL_COLOR_BUFFER_BIT);
-    for (num = 0; num < 100; num += 1)
+    int i, j;
+    float x, y, z;
+    init();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(pan, 0.0, 1.0, 0.0);
+    glRotatef(tilt, 1.0, 0.0, 0.0);
+
+    // Zemlja
+    glColor3f(r, g, b);
+    glBegin(GL_QUADS);
+    for (i = -10; i + 1 < 11; i++)
     {
-        glBegin(GL_AMBIENT);
-        glMatrixMode(GL_MODELVIEW);
-        glRotatef(30, 0, 0, 0);
-        glEnd();
-        Sleep(10);
+        for (j = -10; j + 1 < 11; j++)
+        {
+            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
+            glVertex3f(ground_points[j + 10][i + 10],
+                       ground_points[j + 10][i + 10],
+                       ground_points[j + 10][i + 10] + zoom);
+            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
+            glVertex3f(ground_points[j + 1 + 10][i + 10],
+                       ground_points[j + 1 + 10][i + 10],
+                       ground_points[j + 1 + 10][i + 10] + zoom);
+           glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
+            glVertex3f(ground_points[j + 1 + 10][i + 1 + 10],
+                       ground_points[j + 1 + 10][i + 1 + 10],
+                       ground_points[j + 1 + 10][i + 1 + 10] + zoom);
+            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
+            glVertex3f(ground_points[j + 10][i + 1 + 10],
+                       ground_points[j + 10][i + 1 + 10],
+                       ground_points[j + 10][i + 1 + 10] + zoom);
+        }
     }
-    glPopMatrix();
+    glEnd();
+    draw_rain();
     glutSwapBuffers();
-    exit(0);
 }
+
+/**
+ * Crtanje kise
+ */
+void draw_rain() {
+  float x, y;
+  for (loop = 0; loop < MAX_PARTICLES; loop=loop+2) {
+    if (par_sys[loop].alive == 1) {
+      x = par_sys[loop].xpos;
+      y = par_sys[loop].ypos;
+
+      // Crtanje
+      glColor3f(0.5, 0.5, 1.0);
+      glBegin(GL_LINES);
+        glVertex2f(x, y);
+        glVertex2f(x, y+0.5);
+      glEnd();
+
+      par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
+      par_sys[loop].vel += par_sys[loop].gravity;
+
+      // Skidaj
+      par_sys[loop].life -= par_sys[loop].fade;
+
+      if (par_sys[loop].ypos <= -10) {
+        par_sys[loop].life = -1.0;
+      }
+      // Ako nestaju, opet init
+      if (par_sys[loop].life < 0.0) {
+        initParticles(loop);
+      }
+    }
+  }
+}
+
