@@ -128,7 +128,7 @@ void displayGame()
 {
     // Display animation
     if (game == 1)
-    {   
+    {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClear(GL_POINT);
         for (int i = 0; i < 10000; i++)
@@ -236,6 +236,20 @@ void displayGame()
                     printf("Levo pomerio:\t%d\n", moved_left);
                     printf("Desno pomerio:\t%d\n", moved_right);
                     exit(0);
+                }
+
+                else
+                {
+                    glBegin(GL_POLYGON);
+                    glColor3f(1.0f, 0.0f, 0.0f);
+                    left = -200 + 200 * (moved_right - moved_left);
+                    right = 200 + 200 * (moved_right - moved_left);
+                    glVertex2i(left, -315);
+                    glVertex2i(left, -295);
+                    glVertex2i(right, -295);
+                    glVertex2i(right, -315);
+                    glColor3f(1.0f, 0.0f, 0.0f);
+                    glEnd();
                 }
             }
             glutSwapBuffers();
