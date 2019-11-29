@@ -18,13 +18,10 @@
 // Particle struktura
 typedef struct {
   // Life
-  int alive;
+  int alive;	// is the particle alive?
   float life;	// particle lifespan
   float fade; // decay
-  // boje
-  float red;
-  float green;
-  float blue;
+
   // Position/direction
   float xpos;
   float ypos;
@@ -36,12 +33,9 @@ typedef struct {
 
 // Paticle System
 particles par_sys[MAX_PARTICLES];
+
 float slowdown;
 float velocity;
-float zoom;
-float pan;
-float tilt;
-float hailsize;
 
 // Tekst buffer
 char string [100];
@@ -63,29 +57,7 @@ int horizontal_ball_flight_modifier,
 int score, count;
 int loop;
 
-/**
- * Funkcija za inicijalizaciju partikala
- * @param i - index particla
- */
-void initParticles(int i) {
-    par_sys[i].alive = 1;
-    par_sys[i].life = 1.0;
-    par_sys[i].fade = (float)(rand()%100)/1000.0f+0.003f;
-
-    par_sys[i].xpos = (float) (rand() % 21) - 10;
-    par_sys[i].ypos = 10.0;
-
-
-    par_sys[i].red = 0.5;
-    par_sys[i].green = 0.5;
-    par_sys[i].blue = 1.0;
-
-    par_sys[i].vel = velocity;
-    par_sys[i].gravity = -0.8;
-}
-
-
-
 void initGame(void);
+void initParticles(int i);
 void keyboard(unsigned char key_pressed, int x_cord, int y_cord);
 void displayGame(void);

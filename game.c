@@ -19,19 +19,8 @@ int score = 0, count = 1, game = 1;
 
 //promenljive za kisu
 float slowdown = 2.0;
-float velocity = 0.0;
-float zoom = -40.0;
-float pan = 0.0;
-float tilt = 0.0;
-float hailsize = 0.1;
+float velocity = 1.0;
 
-//floor colors
-float r = 0.0;
-float g = 1.0;
-float b = 0.0;
-float ground_points[21][21];
-float ground_colors[21][21];
-float accum = -10.0;
 
 /**
  * Funkcija za pokretanje programa
@@ -96,7 +85,8 @@ void keyboard(unsigned char key, int x, int y)
         game = 0;
     }
 
-    if (key == 113) exit(1);
+    if (key == 113)
+        exit(1);
     // Poziv za update
     glutPostRedisplay();
 }
@@ -114,17 +104,14 @@ void initGame()
     // Velicina ekrana
     gluOrtho2D(-620.0, 620.0, -340.0, 340.0);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glEnable(GL_TEXTURE_2D);
+
 }
 
 void displayGame()
 {
 
-    if(game == 2){
+    if (game == 2)
+    {
         play_death_animation();
     }
     // Display animation
@@ -278,39 +265,6 @@ void displayGame()
     }
 }
 
-void init()
-{
-    int x, z;
-
-    glShadeModel(GL_SMOOTH);
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glClearDepth(1.0);
-    glEnable(GL_DEPTH_TEST);
-
-    // Ground Verticies
-    // Ground Colors
-    for (z = 0; z < 21; z++)
-    {
-        for (x = 0; x < 21; x++)
-        {
-            ground_points[x][z] = x - 10.0;
-            ground_points[x][z] = accum;
-            ground_points[x][z] = z - 10.0;
-
-            ground_colors[z][x] = r;   // red value
-            ground_colors[z][x] = g;   // green value
-            ground_colors[z][x] = b;   // blue value
-            ground_colors[z][x] = 0.0; // acummulation factor
-        }
-    }
-
-    // Init partikala
-    for (loop = 0; loop < MAX_PARTICLES; loop++)
-    {
-        initParticles(loop);
-    }
-}
-
 /**
  * Funkcija za ispis teksta na ekran preko GLUT
  */
@@ -335,76 +289,69 @@ void drawText(char *string, int x, int y)
  */
 void play_death_animation()
 {
-    int i, j;
-    float x, y, z;
-    init();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glRotatef(pan, 0.0, 1.0, 0.0);
-    glRotatef(tilt, 1.0, 0.0, 0.0);
 
-    // Zemlja
-    glColor3f(r, g, b);
-    glBegin(GL_QUADS);
-    for (i = -10; i + 1 < 11; i++)
+    // Init partikala
+    for (loop = 0; loop < MAX_PARTICLES; loop++)
     {
-        for (j = -10; j + 1 < 11; j++)
-        {
-            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
-            glVertex3f(ground_points[j + 10][i + 10],
-                       ground_points[j + 10][i + 10],
-                       ground_points[j + 10][i + 10] + zoom);
-            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
-            glVertex3f(ground_points[j + 1 + 10][i + 10],
-                       ground_points[j + 1 + 10][i + 10],
-                       ground_points[j + 1 + 10][i + 10] + zoom);
-           glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
-            glVertex3f(ground_points[j + 1 + 10][i + 1 + 10],
-                       ground_points[j + 1 + 10][i + 1 + 10],
-                       ground_points[j + 1 + 10][i + 1 + 10] + zoom);
-            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
-            glVertex3f(ground_points[j + 10][i + 1 + 10],
-                       ground_points[j + 10][i + 1 + 10],
-                       ground_points[j + 10][i + 1 + 10] + zoom);
-        }
+        initParticles(loop);
     }
-    glEnd();
     draw_rain();
-    glutSwapBuffers();
+
 }
 
 /**
  * Crtanje kise
  */
-void draw_rain() {
-  float x, y;
-  for (loop = 0; loop < MAX_PARTICLES; loop=loop+2) {
-    if (par_sys[loop].alive == 1) {
-      x = par_sys[loop].xpos;
-      y = par_sys[loop].ypos;
+void draw_rain()
+{
+    glutPostRedisplay();
+    float x, y;
+    glClearColor(0.0, 0.0, 0.0, 0.0);
 
-      // Crtanje
-      glColor3f(0.5, 0.5, 1.0);
-      glBegin(GL_LINES);
-        glVertex2f(x, y);
-        glVertex2f(x, y+0.5);
-      glEnd();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
 
-      par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
-      par_sys[loop].vel += par_sys[loop].gravity;
+    glClear(GL_COLOR_BUFFER_BIT);
+    for (loop = 0; loop < MAX_PARTICLES; loop = loop + 2)
+    {
+        if (par_sys[loop].alive == 1)
+        {
+            Sleep(100);
+            x = par_sys[loop].xpos;
+            y = par_sys[loop].ypos;
 
-      // Skidaj
-      par_sys[loop].life -= par_sys[loop].fade;
+            // Crtanje
+            glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x, y + 0.5);
+            glEnd();
 
-      if (par_sys[loop].ypos <= -10) {
-        par_sys[loop].life = -1.0;
-      }
-      // Ako nestaju, opet init
-      if (par_sys[loop].life < 0.0) {
-        initParticles(loop);
-      }
+            par_sys[loop].ypos += par_sys[loop].vel / (slowdown * 1000);
+            par_sys[loop].vel += par_sys[loop].gravity;
+
+            // Skidaj
+            par_sys[loop].life -= par_sys[loop].fade;
+            if (par_sys[loop].ypos <= -315) par_sys[loop].life = -1.0;
+
+            // Ako nestaju, opet init
+            if (par_sys[loop].life < 0.0) initParticles(loop);
+        }
+        glutSwapBuffers();
     }
-  }
+}
+
+/**
+ * Funkcija za inicijalizaciju partikala
+ * @param i - index particla
+ */
+void initParticles(int i) {
+    par_sys[i].alive = 1;
+    par_sys[i].life = 1.0;
+    par_sys[i].fade = (float)(rand()%100)/1000.0f+0.003f;
+    par_sys[i].xpos = (float) (rand() % 1240) - 620;
+    par_sys[i].ypos = 340.0;
+    printf("cord: x:%f, y:%f", par_sys[i].xpos, par_sys[i].ypos);
+    par_sys[i].vel = velocity;
+    par_sys[i].gravity = -0.8;
 }
 
