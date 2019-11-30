@@ -17,18 +17,12 @@
 
 // Particle struktura
 typedef struct {
-  // Life
-  int alive;	// is the particle alive?
-  float life;	// particle lifespan
-  float fade; // decay
-
-  // Position/direction
+  float life;
+  // Position
   float xpos;
   float ypos;
-  // Velocity/Direction, only goes down in y dir
+  // Velocity
   float vel;
-  // Gravity
-  float gravity;
 }particles;
 
 // Paticle System
@@ -58,6 +52,8 @@ int score, count;
 int loop;
 
 void initGame(void);
+void drawText(char *string, int x, int y);
+void play_death_animation(void);
 void initParticles(int i);
 void keyboard(unsigned char key_pressed, int x_cord, int y_cord);
 void displayGame(void);

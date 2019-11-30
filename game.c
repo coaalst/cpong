@@ -18,9 +18,8 @@ int horizontal_ball_flight_modifier = 1,
 int score = 0, count = 1, game = 1;
 
 //promenljive za kisu
-float slowdown = 2.0;
+int partical_init = 0;
 float velocity = 1.0;
-
 
 /**
  * Funkcija za pokretanje programa
@@ -38,7 +37,7 @@ int main(int argc, char **argv)
     glutInitWindowPosition(0, 0);
 
     // Ime za prozor
-    glutCreateWindow("Coin ultra kul pong");
+    glutCreateWindow("CPong");
 
     // keyboard function
     glutKeyboardFunc(keyboard);
@@ -47,6 +46,7 @@ int main(int argc, char **argv)
     initGame();
     glutDisplayFunc(displayGame);
     glutIdleFunc(displayGame);
+
     glutMainLoop();
 }
 
@@ -103,13 +103,14 @@ void initGame()
 
     // Velicina ekrana
     gluOrtho2D(-620.0, 620.0, -340.0, 340.0);
-
-
 }
 
+/**
+ * Funkcija za menadzment scena
+ */
 void displayGame()
 {
-
+    // Display deathscreen
     if (game == 2)
     {
         play_death_animation();
@@ -289,14 +290,18 @@ void drawText(char *string, int x, int y)
  */
 void play_death_animation()
 {
-
     // Init partikala
-    for (loop = 0; loop < MAX_PARTICLES; loop++)
+    if (partical_init == 0)
     {
-        initParticles(loop);
+        printf("Initialize particles");
+        for (loop = 0; loop < MAX_PARTICLES; loop++)
+        {
+            initParticles(loop);
+        }
+        partical_init = 1;
     }
+    glClearColor(0, 0, 0, 0);
     draw_rain();
-
 }
 
 /**
@@ -304,54 +309,72 @@ void play_death_animation()
  */
 void draw_rain()
 {
-    glutPostRedisplay();
-    float x, y;
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-
+    glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    for (loop = 0; loop < MAX_PARTICLES; loop = loop + 2)
+    Sleep(50);
+     glColor3f(1.0f, 0.0f, 0.0f);
+        glScalef(1, 1, 1);
+        sprintf(string, "Pod mac!");
+        drawText(string, -120, 80);
+
+
+    for (loop = 0; loop < MAX_PARTICLES; loop++)
     {
-        if (par_sys[loop].alive == 1)
+        // Crtanje
+        glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
+        glBegin(GL_LINES);
+        glVertex2f(par_sys[loop].xpos,  par_sys[loop].ypos);
+        glVertex2f(par_sys[loop].xpos,  par_sys[loop].ypos+0.5);
+        glEnd();
+        par_sys[loop].ypos -= 20.0;
+        if (par_sys[loop].ypos <= -315.0)
         {
-            Sleep(100);
-            x = par_sys[loop].xpos;
-            y = par_sys[loop].ypos;
-
-            // Crtanje
-            glBegin(GL_LINES);
-            glVertex2f(x, y);
-            glVertex2f(x, y + 0.5);
-            glEnd();
-
-            par_sys[loop].ypos += par_sys[loop].vel / (slowdown * 1000);
-            par_sys[loop].vel += par_sys[loop].gravity;
-
-            // Skidaj
-            par_sys[loop].life -= par_sys[loop].fade;
-            if (par_sys[loop].ypos <= -315) par_sys[loop].life = -1.0;
-
-            // Ako nestaju, opet init
-            if (par_sys[loop].life < 0.0) initParticles(loop);
+            printf("pala ispod");
+            initParticles(loop);
         }
         glutSwapBuffers();
     }
+
+
+/*
+    // Crvene linije
+    int col = 0;
+    for (col = 0; col <= 2; col++)
+    {
+
+        if (col % 2 == 0)
+        {
+            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
+            sprintf(string, "Press S to start");
+            drawText(string, -120, 80);
+            drawText(string, -121, 80);
+            drawText(string, -119, 80);
+            Sleep(50);
+        }
+
+        else
+        {
+            glColor3f(1.0f, 0.0f, 0.0f);
+            sprintf(string, "Press S to start");
+            drawText(string, -120, 80);
+            drawText(string, -121, 80);
+            drawText(string, -119, 80);
+            Sleep(50);
+        }
+        glutSwapBuffers();
+    }
+      */
 }
 
 /**
  * Funkcija za inicijalizaciju partikala
  * @param i - index particla
  */
-void initParticles(int i) {
-    par_sys[i].alive = 1;
+void initParticles(int i)
+{
     par_sys[i].life = 1.0;
-    par_sys[i].fade = (float)(rand()%100)/1000.0f+0.003f;
-    par_sys[i].xpos = (float) (rand() % 1240) - 620;
-    par_sys[i].ypos = 340.0;
-    printf("cord: x:%f, y:%f", par_sys[i].xpos, par_sys[i].ypos);
+    par_sys[i].xpos = (float)(rand() % 1240) - 620;
+    par_sys[i].ypos = (float)(rand() % 10) + 340.0;
     par_sys[i].vel = velocity;
-    par_sys[i].gravity = -0.8;
 }
-
