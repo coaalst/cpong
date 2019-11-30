@@ -27,7 +27,8 @@ typedef struct {
 
 // Paticle System
 particles par_sys[MAX_PARTICLES];
-
+int partical_init;
+int partical_reset;
 float slowdown;
 float velocity;
 

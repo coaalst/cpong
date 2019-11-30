@@ -301,6 +301,7 @@ void play_death_animation()
         partical_init = 1;
     }
     glClearColor(0, 0, 0, 0);
+    if(partical_reset == 1500) exit(0);
     draw_rain();
 }
 
@@ -312,59 +313,34 @@ void draw_rain()
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Sleep(50);
-     glColor3f(1.0f, 0.0f, 0.0f);
-        glScalef(1, 1, 1);
-        sprintf(string, "Pod mac!");
-        drawText(string, -120, 80);
-
-
+    // Crtanje
     for (loop = 0; loop < MAX_PARTICLES; loop++)
     {
-        // Crtanje
-        glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
-        glBegin(GL_LINES);
-        glVertex2f(par_sys[loop].xpos,  par_sys[loop].ypos);
-        glVertex2f(par_sys[loop].xpos,  par_sys[loop].ypos+0.5);
-        glEnd();
-        par_sys[loop].ypos -= 20.0;
-        if (par_sys[loop].ypos <= -315.0)
+        if (loop % 2 == 0)
         {
-            printf("pala ispod");
-            initParticles(loop);
-        }
-        glutSwapBuffers();
-    }
-
-
-/*
-    // Crvene linije
-    int col = 0;
-    for (col = 0; col <= 2; col++)
-    {
-
-        if (col % 2 == 0)
-        {
-            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
-            sprintf(string, "Press S to start");
-            drawText(string, -120, 80);
-            drawText(string, -121, 80);
-            drawText(string, -119, 80);
-            Sleep(50);
+            glColor3f(1.0f, 0.0f, 0.0f);
+            glBegin(GL_LINES);
+            glVertex2f(par_sys[loop].xpos, par_sys[loop].ypos);
+            glVertex2f(par_sys[loop].xpos, par_sys[loop].ypos + 7.5);
+            glEnd();
         }
 
         else
         {
-            glColor3f(1.0f, 0.0f, 0.0f);
-            sprintf(string, "Press S to start");
-            drawText(string, -120, 80);
-            drawText(string, -121, 80);
-            drawText(string, -119, 80);
-            Sleep(50);
+            glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
+            glBegin(GL_LINES);
+            glVertex2f(par_sys[loop].xpos, par_sys[loop].ypos);
+            glVertex2f(par_sys[loop].xpos, par_sys[loop].ypos + 2.5);
+            glEnd();
+        }
+        par_sys[loop].ypos -= 20.0;
+        if (par_sys[loop].ypos <= -315.0)
+        {
+            initParticles(loop);
+            partical_reset++;
         }
         glutSwapBuffers();
     }
-      */
 }
 
 /**
