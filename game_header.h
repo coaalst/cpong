@@ -55,6 +55,7 @@ int loop;
 void initGame(void);
 void drawText(char *string, int x, int y);
 void play_death_animation(void);
+void draw_rain(void);
 void initParticles(int i);
 void keyboard(unsigned char key_pressed, int x_cord, int y_cord);
 void displayGame(void);

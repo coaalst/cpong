@@ -17,7 +17,7 @@ int horizontal_ball_flight_modifier = 1,
 // Promenljive za skor
 int score = 0, count = 1, game = 1;
 
-//promenljive za kisu
+// Promenljive za kisu
 int partical_init = 0;
 float velocity = 1.0;
 
@@ -52,6 +52,7 @@ int main(int argc, char **argv)
 
 /**
  * Funkcija za hvatanje korisnickog inputa
+ * @param key - pristisnut taster
  */
 void keyboard(unsigned char key, int x, int y)
 {
@@ -125,7 +126,6 @@ void displayGame()
         int col = 0;
         for (col = 0; col <= 2; col++)
         {
-
             if (col % 2 == 0)
             {
                 glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
@@ -148,7 +148,6 @@ void displayGame()
             glutSwapBuffers();
         }
     }
-
     // Display game
     if (game == 0)
     {
@@ -268,6 +267,9 @@ void displayGame()
 
 /**
  * Funkcija za ispis teksta na ekran preko GLUT
+ * @param string - poruka za ispis
+ * @param x - x cord
+ * @param y - y cord
  */
 void drawText(char *string, int x, int y)
 {
