@@ -12,7 +12,7 @@
 #define sleep(x) Sleep(1000 * (x))
 #endif
 
-#define MAX_PARTICLES   500
+#define MAX_PARTICLES   200
 #define pi              3.142857
 
 // Particle struktura

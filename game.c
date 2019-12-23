@@ -303,7 +303,7 @@ void play_death_animation()
         partical_init = 1;
     }
     glClearColor(0, 0, 0, 0);
-    if(partical_reset == 1500) exit(0);
+    if(partical_reset == 200) exit(0);
     draw_rain();
 }
 
@@ -332,7 +332,7 @@ void draw_rain()
             glColor3f(3 / 255.0f, 252 / 255.0f, 240 / 255.0f);
             glBegin(GL_LINES);
             glVertex2f(par_sys[loop].xpos, par_sys[loop].ypos);
-            glVertex2f(par_sys[loop].xpos, par_sys[loop].ypos + 2.5);
+            glVertex2f(par_sys[loop].xpos, par_sys[loop].ypos + 5.5);
             glEnd();
         }
         par_sys[loop].ypos -= 20.0;
